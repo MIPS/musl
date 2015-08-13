@@ -200,6 +200,7 @@ trap 'rm "$tmpc"' EXIT INT QUIT TERM HUP
 # Find a C compiler to use
 #
 printf "checking for C compiler... "
+trycc ${CROSS_COMPILE}clang
 trycc ${CROSS_COMPILE}gcc
 trycc ${CROSS_COMPILE}c99
 trycc ${CROSS_COMPILE}cc
