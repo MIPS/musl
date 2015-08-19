@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include "syscall.h"
 
-long ptrace(int req, ...)
+long ptrace(enum __ptrace_request req, ...)
 {
 	va_list ap;
 	pid_t pid;
