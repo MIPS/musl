@@ -115,7 +115,7 @@ CFLAGS_MEMOPS=
 CFLAGS_NOSSP=
 CFLAGS_TRY=
 LDFLAGS_AUTO=
-LDFLAGS_TRY=
+LDFLAGS_TRY="-fuse-ld=ld"
 OPTIMIZE_GLOBS=
 prefix=/usr/local/musl
 exec_prefix='$(prefix)'
