@@ -1175,7 +1175,7 @@ static void kernel_mapped_dso(struct dso *p)
 	p->kernel_mapped = 1;
 }
 
-void __libc_exit_fini()
+static void do_fini()
 {
 	struct dso *p;
 	size_t dyn[DYN_CNT];
@@ -1659,6 +1659,8 @@ _Noreturn void __dls3(size_t *sp)
 	debug.state = 0;
 	_dl_debug_state();
 
+	__init_libc(envp, argv[0]);
+	atexit(do_fini);
 	errno = 0;
 
 	CRTJMP((void *)aux[AT_ENTRY], argv-1);

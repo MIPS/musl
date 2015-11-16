@@ -11,24 +11,24 @@ static void dummy()
 weak_alias(dummy, __funcs_on_exit);
 weak_alias(dummy, __stdio_exit);
 
-extern void _fini() __attribute__((weak));
+#ifndef SHARED
+weak_alias(dummy, _fini);
 extern void (*const __fini_array_start)() __attribute__((weak));
 extern void (*const __fini_array_end)() __attribute__((weak));
-
-static void libc_exit_fini(void)
-{
-	uintptr_t a = (uintptr_t)&__fini_array_end;
-	for (; a>(uintptr_t)&__fini_array_start; a-=sizeof(void(*)()))
-		(*(void (**)())(a-sizeof(void(*)())))();
-	if (_fini) _fini();
-}
-
-weak_alias(libc_exit_fini, __libc_exit_fini);
+#endif
 
 _Noreturn void exit(int code)
 {
 	__funcs_on_exit();
-	__libc_exit_fini();
+
+#ifndef SHARED
+	uintptr_t a = (uintptr_t)&__fini_array_end;
+	for (; a>(uintptr_t)&__fini_array_start; a-=sizeof(void(*)()))
+		(*(void (**)())(a-sizeof(void(*)())))();
+	_fini();
+#endif
+
 	__stdio_exit();
+
 	_Exit(code);
 }
