@@ -8,7 +8,7 @@ cat <<EOF
 -nostdinc -isystem $incdir -isystem include%s %(old_cpp_options)
 
 *cc1:
-%(cc1_cpu) -nostdinc -isystem $incdir -isystem include%s
+%(cc1_cpu) -mel -nostdinc -isystem $incdir -isystem include%s
 
 *link_libgcc:
 -L$libdir -L .%s
@@ -23,7 +23,7 @@ libgcc.a%s %:if-exists(libgcc_eh.a%s)
 %{shared|pie:crtendS.o%s;:crtend.o%s} $libdir/crtn.o
 
 *link:
--dynamic-linker $ldso -nostdlib %{shared:-shared} %{static:-static} %{rdynamic:-export-dynamic}
+-mips32r7 -mmicromips -melf32ltsmip -dynamic-linker $ldso -nostdlib %{shared:-shared} %{static:-static} %{rdynamic:-export-dynamic}
 
 *esp_link:
 

@@ -111,7 +111,7 @@ obj/crt/crt1.o obj/crt/scrt1.o obj/crt/rcrt1.o obj/ldso/dlstart.lo: $(srcdir)/ar
 
 obj/crt/rcrt1.o: $(srcdir)/ldso/dlstart.c
 
-obj/crt/Scrt1.o obj/crt/rcrt1.o: CFLAGS_ALL += -fPIC
+obj/crt/Scrt1.o obj/crt/rcrt1.o: CFLAGS_ALL +=
 
 obj/crt/$(ARCH)/crti.o: $(srcdir)/crt/$(ARCH)/crti.s
 
@@ -134,7 +134,7 @@ $(NOSSP_SRCS:%.c=obj/%.o) $(NOSSP_SRCS:%.c=obj/%.lo): CFLAGS_ALL += $(CFLAGS_NOS
 
 $(CRT_OBJS): CFLAGS_ALL += -DCRT
 
-$(LOBJS) $(LDSO_OBJS): CFLAGS_ALL += -fPIC
+$(LOBJS) $(LDSO_OBJS): CFLAGS_ALL +=
 
 CC_CMD = $(CC) $(CFLAGS_ALL) -c -o $@ $<
 
