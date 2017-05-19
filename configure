@@ -318,6 +318,7 @@ i?86*) ARCH=i386 ;;
 x86_64-x32*|x32*|x86_64*x32) ARCH=x32 ;;
 x86_64-nt64*) ARCH=nt64 ;;
 x86_64*) ARCH=x86_64 ;;
+nanomips*) ARCH=nanomips ;;
 mips64*|mipsisa64*) ARCH=mips64 ;;
 mips*) ARCH=mips ;;
 microblaze*) ARCH=microblaze ;;
@@ -626,6 +627,12 @@ fi
 
 if test "$ARCH" = "aarch64" ; then
 trycppif __AARCH64EB__ "$t" && SUBARCH=${SUBARCH}_be
+fi
+
+if test "$ARCH" = "nanomips" ; then
+trycppif "__mips_isa_rev > 6" "$t" && SUBARCH=${SUBARCH}r7
+trycppif "_MIPSEL || __MIPSEL || __MIPSEL__" "$t" && SUBARCH=${SUBARCH}el
+trycppif __mips_soft_float "$t" && SUBARCH=${SUBARCH}-sf
 fi
 
 if test "$ARCH" = "mips" ; then
