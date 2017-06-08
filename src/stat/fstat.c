@@ -8,6 +8,12 @@ void __procfdname(char *, unsigned);
 
 int fstat(int fd, struct stat *st)
 {
+#ifdef SYS_statx
+	return syscall(SYS_statx, fd, "",
+			AT_EMPTY_PATH | AT_STATX_SYNC_AS_STAT,
+			STATX_BASIC_STATS, st);
+#endif
+
 	int ret = __syscall(SYS_fstat, fd, st);
 	if (ret != -EBADF || __syscall(SYS_fcntl, fd, F_GETFD) < 0)
 		return __syscall_ret(ret);

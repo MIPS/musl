@@ -1,25 +1,24 @@
 .set    noreorder
-
 .global __syscall
 .hidden __syscall
 .type   __syscall,@function
 __syscall:
-	move    $2, $4
-	move    $4, $5
-	move    $5, $6
-	move    $6, $7
-	lw      $7, 16($sp)
-	lw      $8, 20($sp)
-	lw      $9, 24($sp)
-	lw      $10,28($sp)
-	subu    $sp, $sp, 32
-	sw      $8, 16($sp)
-	sw      $9, 20($sp)
-	sw      $10,24($sp)
-	sw      $2 ,28($sp)
-	lw      $2, 28($sp)
+
+	# preserve syscall number
+	move    $t0, $a0
+
+	# syscall arguments from a1-a5
+	# a6 is not used as an argument to syscall
+	move    $a0, $a1
+	move    $a1, $a2
+	move    $a2, $a3
+	move    $a3, $8
+	move    $8, $9
+	move    $9, $10
+
+	# syscall number in a7
+	move    $11, $t0
 	syscall
-	addu    $sp, $sp, 32
-	beqzc   $7, 1f
-	subu    $2, $0, $2
-1:	jrc     $ra
+
+	# don't negate the error code in va0
+	jrc     $ra

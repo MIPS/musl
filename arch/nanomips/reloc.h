@@ -44,7 +44,7 @@
 	"	balc32 1f \n" \
 	"	.gpword . \n" \
 	"	.gpword " #sym " \n" \
-	"1:	lw %0, ($ra) \n" \
+	"1:	lw %0, 0($ra) \n" \
 	"	subu %0, $ra, %0 \n" \
 	"	lw $ra, 4($ra) \n" \
 	"	addu %0, %0, $ra \n" \

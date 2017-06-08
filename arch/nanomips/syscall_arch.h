@@ -8,104 +8,70 @@ long (__syscall)(long, ...);
 
 #define SYSCALL_RLIM_INFINITY (-1UL/2)
 
-#if _MIPSEL || __MIPSEL || __MIPSEL__
-#define __stat_fix(st) ((st),(void)0)
-#else
 #include <sys/stat.h>
-static inline void __stat_fix(long p)
+#define __NEED_int64_t
+#define __NEED_uint64_t
+#define __NEED_uint32_t
+#define __NEED_uint16_t
+#include <bits/alltypes.h>
+
+#define MKDEV(ma,mi)	(((ma) << 20) | (mi))
+
+struct statx_timestamp {
+	int64_t tv_sec;		/* Seconds since the Epoch (UNIX time) */
+	uint32_t tv_nsec;	/* Nanoseconds since tv_sec */
+};
+
+struct statx {
+	uint32_t stx_mask;		/* Mask of bits indicating filled fields */
+	uint32_t stx_blksize;		/* Block size for filesystem I/O */
+	uint64_t stx_attributes;	/* Extra file attribute indicators */
+	uint32_t stx_nlink;		/* Number of hard links */
+	uint32_t stx_uid;		/* User ID of owner */
+	uint32_t stx_gid;		/* Group ID of owner */
+	uint16_t stx_mode;		/* File type and mode */
+	uint64_t stx_ino;		/* Inode number */
+	uint64_t stx_size;		/* Total size in bytes */
+	uint64_t stx_blocks;		/* Number of 512B blocks allocated */
+	uint64_t stx_attributes_mask;	/* Mask to show what's supported in stx_attributes */
+
+	/* The following fields are file timestamps */
+	struct statx_timestamp stx_atime;	/* Last access */
+	struct statx_timestamp stx_btime;	/* Creation */
+	struct statx_timestamp stx_ctime;	/* Last status change */
+	struct statx_timestamp stx_mtime;	/* Last modification */
+
+	/* If this file represents a device, then the next two
+	   fields contain the ID of the device */
+	uint32_t stx_rdev_major;	/* Major ID */
+	uint32_t stx_rdev_minor;	/* Minor ID */
+
+	/* The next two fields contain the ID of the device
+	   containing the filesystem where the file resides */
+	uint32_t stx_dev_major;		/* Major ID */
+	uint32_t stx_dev_minor;		/* Minor ID */
+};
+
+static inline void __statx_to_stat(struct statx *src, struct stat *dst)
 {
-	struct stat *st = (struct stat *)p;
-	st->st_dev >>= 32;
-	st->st_rdev >>= 32;
+	dst->st_dev = MKDEV(src->stx_dev_major, src->stx_dev_minor);
+	dst->st_ino = src->stx_ino;
+	dst->st_mode = src->stx_mode;
+	dst->st_nlink = src->stx_nlink;
+	dst->st_uid = src->stx_uid;
+	dst->st_gid = src->stx_gid;
+	dst->st_rdev = MKDEV(src->stx_rdev_major, src->stx_rdev_minor);
+	dst->st_size = src->stx_size;
+	dst->st_atim.tv_sec = src->stx_atime.tv_sec;
+	dst->st_atim.tv_nsec = src->stx_atime.tv_nsec;
+	dst->st_mtim.tv_sec = src->stx_mtime.tv_sec;
+	dst->st_mtim.tv_nsec = src->stx_mtime.tv_nsec;
+	dst->st_ctim.tv_sec = src->stx_ctime.tv_sec;
+	dst->st_ctim.tv_nsec = src->stx_ctime.tv_nsec;
+	dst->st_blksize = src->stx_blksize;
+	dst->st_blocks = src->stx_blocks;
+	return;
 }
-#endif
-
-#ifndef __clang__
-
-static inline long __syscall0(long n)
-{
-	register long r7 __asm__("$7");
-	register long r2 __asm__("$2");
-	__asm__ __volatile__ (
-		"addu $2,$0,%2 ; syscall"
-		: "=&r"(r2), "=r"(r7) : "ir"(n), "0"(r2), "1"(r7)
-		: "$1", "$3", "$8", "$9", "$10", "$11", "$12", "$13",
-		  "$14", "$15", "$24", "$25", "hi", "lo", "memory");
-	return r7 ? -r2 : r2;
-}
-
-static inline long __syscall1(long n, long a)
-{
-	register long r4 __asm__("$4") = a;
-	register long r7 __asm__("$7");
-	register long r2 __asm__("$2");
-	__asm__ __volatile__ (
-		"addu $2,$0,%2 ; syscall"
-		: "=&r"(r2), "=r"(r7) : "ir"(n), "0"(r2), "1"(r7),
-		  "r"(r4)
-		: "$1", "$3", "$8", "$9", "$10", "$11", "$12", "$13",
-		  "$14", "$15", "$24", "$25", "hi", "lo", "memory");
-	return r7 ? -r2 : r2;
-}
-
-static inline long __syscall2(long n, long a, long b)
-{
-	register long r4 __asm__("$4") = a;
-	register long r5 __asm__("$5") = b;
-	register long r7 __asm__("$7");
-	register long r2 __asm__("$2");
-	__asm__ __volatile__ (
-		"addu $2,$0,%2 ; syscall"
-		: "=&r"(r2), "=r"(r7) : "ir"(n), "0"(r2), "1"(r7),
-		  "r"(r4), "r"(r5)
-		: "$1", "$3", "$8", "$9", "$10", "$11", "$12", "$13",
-		  "$14", "$15", "$24", "$25", "hi", "lo", "memory");
-	if (r7) return -r2;
-	long ret = r2;
-	if (n == SYS_stat64 || n == SYS_fstat64 || n == SYS_lstat64) __stat_fix(b);
-	return ret;
-}
-
-static inline long __syscall3(long n, long a, long b, long c)
-{
-	register long r4 __asm__("$4") = a;
-	register long r5 __asm__("$5") = b;
-	register long r6 __asm__("$6") = c;
-	register long r7 __asm__("$7");
-	register long r2 __asm__("$2");
-	__asm__ __volatile__ (
-		"addu $2,$0,%2 ; syscall"
-		: "=&r"(r2), "=r"(r7) : "ir"(n), "0"(r2), "1"(r7),
-		  "r"(r4), "r"(r5), "r"(r6)
-		: "$1", "$3", "$8", "$9", "$10", "$11", "$12", "$13",
-		  "$14", "$15", "$24", "$25", "hi", "lo", "memory");
-	if (r7) return -r2;
-	long ret = r2;
-	if (n == SYS_stat64 || n == SYS_fstat64 || n == SYS_lstat64) __stat_fix(b);
-	return ret;
-}
-
-static inline long __syscall4(long n, long a, long b, long c, long d)
-{
-	register long r4 __asm__("$4") = a;
-	register long r5 __asm__("$5") = b;
-	register long r6 __asm__("$6") = c;
-	register long r7 __asm__("$7") = d;
-	register long r2 __asm__("$2");
-	__asm__ __volatile__ (
-		"addu $2,$0,%2 ; syscall"
-		: "=&r"(r2), "=r"(r7) : "ir"(n), "0"(r2), "1"(r7),
-		  "r"(r4), "r"(r5), "r"(r6)
-		: "$1", "$3", "$8", "$9", "$10", "$11", "$12", "$13",
-		  "$14", "$15", "$24", "$25", "hi", "lo", "memory");
-	if (r7) return -r2;
-	long ret = r2;
-	if (n == SYS_stat64 || n == SYS_fstat64 || n == SYS_lstat64) __stat_fix(b);
-	if (n == SYS_fstatat) __stat_fix(c);
-	return ret;
-}
-
-#else
 
 static inline long __syscall0(long n)
 {
@@ -119,49 +85,35 @@ static inline long __syscall1(long n, long a)
 
 static inline long __syscall2(long n, long a, long b)
 {
-	long r2 = (__syscall)(n, a, b);
-	if (r2 > -4096UL) return r2;
-	if (n == SYS_stat64 || n == SYS_fstat64 || n == SYS_lstat64) __stat_fix(b);
-	return r2;
+	return (__syscall)(n, a, b);
 }
 
 static inline long __syscall3(long n, long a, long b, long c)
 {
-	long r2 = (__syscall)(n, a, b, c);
-	if (r2 > -4096UL) return r2;
-	if (n == SYS_stat64 || n == SYS_fstat64 || n == SYS_lstat64) __stat_fix(b);
-	return r2;
+	return (__syscall)(n, a, b, c);
 }
 
 static inline long __syscall4(long n, long a, long b, long c, long d)
 {
-	long r2 = (__syscall)(n, a, b, c, d);
-	if (r2 > -4096UL) return r2;
-	if (n == SYS_stat64 || n == SYS_fstat64 || n == SYS_lstat64) __stat_fix(b);
-	if (n == SYS_fstatat) __stat_fix(c);
-	return r2;
+	return (__syscall)(n, a, b, c, d);
 }
-
-#endif
 
 static inline long __syscall5(long n, long a, long b, long c, long d, long e)
 {
-	long r2 = (__syscall)(n, a, b, c, d, e);
-	if (r2 > -4096UL) return r2;
-	if (n == SYS_stat64 || n == SYS_fstat64 || n == SYS_lstat64) __stat_fix(b);
-	if (n == SYS_fstatat) __stat_fix(c);
-	return r2;
+	struct statx x;
+	long va0 = (__syscall)(n, a, b, c, d, &x);
+	if (va0 > -4096UL) return va0;
+	if (n == SYS_statx) __statx_to_stat(&x, (struct stat*) e);
+	return va0;
 }
 
 static inline long __syscall6(long n, long a, long b, long c, long d, long e, long f)
 {
-	long r2 = (__syscall)(n, a, b, c, d, e, f);
-	if (r2 > -4096UL) return r2;
-	if (n == SYS_stat64 || n == SYS_fstat64 || n == SYS_lstat64) __stat_fix(b);
-	if (n == SYS_fstatat) __stat_fix(c);
-	return r2;
+	return (__syscall)(n, a, b, c, d, e, f);
 }
 
 #define VDSO_USEFUL
 #define VDSO_CGT_SYM "__vdso_clock_gettime"
 #define VDSO_CGT_VER "LINUX_2.6"
+
+#define SYSCALL_FADVISE_6_ARG
