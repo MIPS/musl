@@ -4,8 +4,8 @@
 .type dlsym,@function
 dlsym:
 	aluipc       $gp, %pcrel_hi(_gp)
-	move         $6, $ra
-	lw           $25, %call16(__dlsym)($gp)
+	move         $a2, $ra
+	lw           $t9, %call16(__dlsym)($gp)
 	save         32, $ra
-	jalrc        $25
+	jalrc        $t9
 	restore.jrc  32, $ra

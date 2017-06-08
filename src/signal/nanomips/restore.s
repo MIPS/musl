@@ -1,13 +1,9 @@
-.set noreorder
-
-.global __restore_rt
-.type   __restore_rt,@function
-__restore_rt:
-	li $2, 4193
-	syscall
-
+.set    noreorder
 .global __restore
+.global __restore_rt
 .type   __restore,@function
+.type   __restore_rt,@function
 __restore:
-	li $2, 4119
+__restore_rt:
+	li $11, 139	# __NR_rt_sigreturn
 	syscall

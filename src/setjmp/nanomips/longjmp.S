@@ -5,34 +5,28 @@
 .type longjmp,@function
 _longjmp:
 longjmp:
-	move    $2, $5
-	bnezc   $2, 1f
-	addiu   $2, $2, 1
-1:
 #ifndef __mips_soft_float
-	lwc1    $20, 56($4)
-	lwc1    $21, 60($4)
-	lwc1    $22, 64($4)
-	lwc1    $23, 68($4)
-	lwc1    $24, 72($4)
-	lwc1    $25, 76($4)
-	lwc1    $26, 80($4)
-	lwc1    $27, 84($4)
-	lwc1    $28, 88($4)
-	lwc1    $29, 92($4)
-	lwc1    $30, 96($4)
-	lwc1    $31, 100($4)
+	lwc1    $20, 56($a0)
+	lwc1    $21, 60($a0)
+	lwc1    $22, 64($a0)
+	lwc1    $23, 68($a0)
+	lwc1    $24, 72($a0)
+	lwc1    $25, 76($a0)
+	lwc1    $26, 80($a0)
+	lwc1    $27, 84($a0)
+	lwc1    $28, 88($a0)
+	lwc1    $29, 92($a0)
+	lwc1    $30, 96($a0)
+	lwc1    $31, 100($a0)
 #endif
-	lw      $ra,  0($4)
-	lw      $sp,  4($4)
-	lw      $16,  8($4)
-	lw      $17, 12($4)
-	lw      $18, 16($4)
-	lw      $19, 20($4)
-	lw      $20, 24($4)
-	lw      $21, 28($4)
-	lw      $22, 32($4)
-	lw      $23, 36($4)
-	lw      $30, 40($4)
-	lw      $28, 44($4)
+	lw      $ra,  0($a0)
+	lw      $sp,  4($a0)
+	lwm     $s0,  8($a0), 8
+	lw      $fp, 40($a0)
+	lw      $gp, 44($a0)
+
+	move    $a0, $a1
+	bnezc   $a0, 1f
+	addiu   $a0, $a0, 1
+1:
 	jrc     $ra

@@ -163,5 +163,9 @@ struct termios {
 #define EXTPROC 0200000
 
 #define XTABS  0014000
+
+#ifndef TIOCSER_TEMT
 #define TIOCSER_TEMT 1
+#endif
+
 #endif

@@ -2,9 +2,8 @@
 .global __unmapself
 .type   __unmapself,@function
 __unmapself:
-	move $sp, $25
-	li $2, 4091
+	li   $11, 215		# munmap
 	syscall
-	li $4, 0
-	li $2, 4001
+	li   $a0, 0
+	li   $11, 93		# exit
 	syscall
