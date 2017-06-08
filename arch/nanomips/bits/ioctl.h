@@ -98,7 +98,9 @@
 #define TIOCPKT_DOSTOP		32
 #define TIOCPKT_IOCTL		64
 
+#ifndef TIOCSER_TEMT
 #define TIOCSER_TEMT    0x01
+#endif
 
 struct winsize {
 	unsigned short ws_row;

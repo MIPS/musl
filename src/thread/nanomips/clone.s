@@ -3,29 +3,22 @@
 .type   __clone,@function
 __clone:
 	# Save function pointer and argument pointer on new thread stack
-	and   $5, $5, -8
-	subu  $5, $5, 16
-	sw    $4, 0($5)
-	sw    $7, 4($5)
+	and   $a1, $a1, -8
+	subu  $a1, $a1, 16
+	sw    $a0, 0($a1)
+	sw    $a3, 4($a1)
 
 	# Shuffle (fn,sp,fl,arg,ptid,tls,ctid) to (fl,sp,ptid,tls,ctid)
-	move  $4, $6
-	lw    $6, 16($sp)
-	lw    $7, 20($sp)
-	lw    $9, 24($sp)
-	subu  $sp, $sp, 16
-	sw    $9, 16($sp)
-	li    $2, 4120
+	move  $a0, $a2
+	move  $a2, $a4
+	move  $a3, $a5
+	move  $a4, $a6
+	li    $a7, 220
 	syscall
-	beqzc $7, 1f
-	addiu $sp, $sp, 16
-	subu  $2, $0, $2
+
+	beqzc $a0, 1f
 	jrc   $ra
 
-1:	beqzc $2, 1f
-	addiu $sp, $sp, 16
-	jrc   $ra
-
-1:	lw    $25, 0($sp)
-	lw    $4, 4($sp)
-	jrc   $25
+1:	lw    $t9, 0($sp)
+	lw    $a0, 4($sp)
+	jrc   $t9
