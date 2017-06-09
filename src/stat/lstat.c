@@ -10,9 +10,15 @@ int lstat(const char *restrict path, struct stat *restrict buf)
 #elif defined(SYS_fstatat)
 	return syscall(SYS_fstatat, AT_FDCWD, path, buf, AT_SYMLINK_NOFOLLOW);
 #else
-	return syscall(SYS_statx, AT_FDCWD, path,
+	struct statx bufx;
+	int result;
+
+	result = syscall(SYS_statx, AT_FDCWD, path,
 			AT_SYMLINK_NOFOLLOW | AT_STATX_SYNC_AS_STAT,
-			STATX_BASIC_STATS, buf);
+			STATX_BASIC_STATS, &bufx);
+	if (!result)
+		__statx_to_stat(&bufx, buf);
+	return result;
 #endif
 }
 

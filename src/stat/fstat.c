@@ -21,9 +21,15 @@ int fstat(int fd, struct stat *st)
 	return syscall(SYS_fstatat, AT_FDCWD, buf, st, 0);
 #endif
 #else
-	return syscall(SYS_statx, fd, "",
+	struct statx bufx;
+	int result;
+
+	result = syscall(SYS_statx, fd, "",
 			AT_EMPTY_PATH | AT_STATX_SYNC_AS_STAT,
-			STATX_BASIC_STATS, st);
+			STATX_BASIC_STATS, &bufx);
+	if (!result)
+		__statx_to_stat(&bufx, st);
+	return result;
 #endif
 }
 

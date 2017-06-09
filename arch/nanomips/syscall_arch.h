@@ -104,11 +104,7 @@ static inline long __syscall4(long n, long a, long b, long c, long d)
 
 static inline long __syscall5(long n, long a, long b, long c, long d, long e)
 {
-	struct statx x;
-	long va0 = (__syscall)(n, a, b, c, d, &x);
-	if (va0 > -4096UL) return va0;
-	if (n == SYS_statx) __statx_to_stat(&x, (struct stat*) e);
-	return va0;
+	return (__syscall)(n, a, b, c, d, e);
 }
 
 static inline long __syscall6(long n, long a, long b, long c, long d, long e, long f)
