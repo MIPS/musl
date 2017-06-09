@@ -20,6 +20,7 @@ long (__syscall)(long, ...);
 struct statx_timestamp {
 	int64_t tv_sec;		/* Seconds since the Epoch (UNIX time) */
 	uint32_t tv_nsec;	/* Nanoseconds since tv_sec */
+	uint32_t __reserved;
 };
 
 struct statx {
@@ -30,6 +31,7 @@ struct statx {
 	uint32_t stx_uid;		/* User ID of owner */
 	uint32_t stx_gid;		/* Group ID of owner */
 	uint16_t stx_mode;		/* File type and mode */
+	uint16_t __spare0[1];
 	uint64_t stx_ino;		/* Inode number */
 	uint64_t stx_size;		/* Total size in bytes */
 	uint64_t stx_blocks;		/* Number of 512B blocks allocated */
@@ -50,6 +52,8 @@ struct statx {
 	   containing the filesystem where the file resides */
 	uint32_t stx_dev_major;		/* Major ID */
 	uint32_t stx_dev_minor;		/* Minor ID */
+
+	uint64_t __spare2[14];		/* Spare space for future expansion */
 };
 
 static inline void __statx_to_stat(struct statx *src, struct stat *dst)
