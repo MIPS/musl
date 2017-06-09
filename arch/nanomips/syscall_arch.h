@@ -15,7 +15,7 @@ long (__syscall)(long, ...);
 #define __NEED_uint16_t
 #include <bits/alltypes.h>
 
-#define MKDEV(ma,mi)	(((ma) << 20) | (mi))
+#include <sys/sysmacros.h>
 
 struct statx_timestamp {
 	int64_t tv_sec;		/* Seconds since the Epoch (UNIX time) */
@@ -58,13 +58,13 @@ struct statx {
 
 static inline void __statx_to_stat(struct statx *src, struct stat *dst)
 {
-	dst->st_dev = MKDEV(src->stx_dev_major, src->stx_dev_minor);
+	dst->st_dev = makedev(src->stx_dev_major, src->stx_dev_minor);
 	dst->st_ino = src->stx_ino;
 	dst->st_mode = src->stx_mode;
 	dst->st_nlink = src->stx_nlink;
 	dst->st_uid = src->stx_uid;
 	dst->st_gid = src->stx_gid;
-	dst->st_rdev = MKDEV(src->stx_rdev_major, src->stx_rdev_minor);
+	dst->st_rdev = makedev(src->stx_rdev_major, src->stx_rdev_minor);
 	dst->st_size = src->stx_size;
 	dst->st_atim.tv_sec = src->stx_atime.tv_sec;
 	dst->st_atim.tv_nsec = src->stx_atime.tv_nsec;
