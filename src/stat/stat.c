@@ -1,7 +1,9 @@
+#define _GNU_SOURCE
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "syscall.h"
 #include "libc.h"
+#undef stat64
 
 int stat(const char *restrict path, struct stat *restrict buf)
 {
