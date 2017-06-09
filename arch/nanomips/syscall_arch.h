@@ -56,7 +56,7 @@ struct statx {
 	uint64_t __spare2[14];		/* Spare space for future expansion */
 };
 
-static inline void __statx_to_stat(struct statx *src, struct stat *dst)
+static inline void __statx_to_stat(const struct statx *src, struct stat *dst)
 {
 	dst->st_dev = makedev(src->stx_dev_major, src->stx_dev_minor);
 	dst->st_ino = src->stx_ino;
@@ -74,7 +74,6 @@ static inline void __statx_to_stat(struct statx *src, struct stat *dst)
 	dst->st_ctim.tv_nsec = src->stx_ctime.tv_nsec;
 	dst->st_blksize = src->stx_blksize;
 	dst->st_blocks = src->stx_blocks;
-	return;
 }
 
 static inline long __syscall0(long n)
