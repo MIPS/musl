@@ -13,6 +13,7 @@ int getrlimit(int resource, struct rlimit *rlim)
 		FIX(rlim->rlim_cur);
 		FIX(rlim->rlim_max);
 	}
+#if defined(SYS_getrlimit)
 	if (!ret || errno != ENOSYS)
 		return ret;
 	if (syscall(SYS_getrlimit, resource, k_rlim) < 0)
@@ -21,7 +22,9 @@ int getrlimit(int resource, struct rlimit *rlim)
 	rlim->rlim_max = k_rlim[1] == -1UL ? RLIM_INFINITY : k_rlim[1];
 	FIX(rlim->rlim_cur);
 	FIX(rlim->rlim_max);
-	return 0;
+	ret = 0;
+#endif
+	return ret;
 }
 
 LFS64(getrlimit);
