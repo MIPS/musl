@@ -242,6 +242,7 @@
 #define __NR_perf_event_open            241
 #define __NR_accept4                    242
 #define __NR_recvmmsg                   243
+#define __NR_set_thread_area            244
 #define __NR_wait4                      260
 #define __NR_prlimit64                  261
 #define __NR_fanotify_init              262
