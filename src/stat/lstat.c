@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include "syscall.h"
 #include "libc.h"
+#include "stat.h"
 #undef lstat64
 
 int lstat(const char *restrict path, struct stat *restrict buf)
