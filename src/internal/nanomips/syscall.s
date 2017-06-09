@@ -4,8 +4,8 @@
 .type   __syscall,@function
 __syscall:
 
-	# preserve syscall number
-	move    $t0, $a0
+	# syscall number in a7
+	move    $11, $a0
 
 	# syscall arguments from a1-a5
 	# a6 is not used as an argument to syscall
@@ -16,8 +16,6 @@ __syscall:
 	move    $8, $9
 	move    $9, $10
 
-	# syscall number in a7
-	move    $11, $t0
 	syscall
 
 	# don't negate the error code in va0
