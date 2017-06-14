@@ -37,12 +37,7 @@ char *tempnam(const char *dir, const char *pfx)
 
 	for (try=0; try<MAXTRIES; try++) {
 		__randname(s+l-6);
-#ifdef SYS_lstat
-		r = __syscall(SYS_lstat, s, &(struct stat){0});
-#else
-		r = __syscall(SYS_fstatat, AT_FDCWD, s,
-			&(struct stat){0}, AT_SYMLINK_NOFOLLOW);
-#endif
+		r = lstat(s, &(struct stat){0});
 		if (r == -ENOENT) return strdup(s);
 	}
 	return 0;

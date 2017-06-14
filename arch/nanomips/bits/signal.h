@@ -55,14 +55,14 @@ typedef struct __ucontext {
 	sigset_t uc_sigmask;
 } ucontext_t;
 
-#define SA_NOCLDSTOP   0x00000001
-#define SA_NOCLDWAIT   0x00000002
-#define SA_SIGINFO     0x00000004
-#define SA_RESTORER    0x04000000
-#define SA_ONSTACK     0x08000000
-#define SA_RESTART     0x10000000
-#define SA_NODEFER     0x40000000
-#define SA_RESETHAND   0x80000000
+#define SA_NOCLDSTOP  1
+#define SA_NOCLDWAIT  0x10000
+#define SA_SIGINFO    8
+#define SA_ONSTACK    0x08000000
+#define SA_RESTART    0x10000000
+#define SA_NODEFER    0x40000000
+#define SA_RESETHAND  0x80000000
+#define SA_RESTORER   0x04000000
 
 #undef SIG_BLOCK
 #undef SIG_UNBLOCK
@@ -82,39 +82,39 @@ typedef struct __ucontext {
 
 #endif
 
-#define SIGHUP        1
-#define SIGINT        2
-#define SIGQUIT       3
-#define SIGILL        4
-#define SIGTRAP       5
-#define SIGABRT       6
-#define SIGIOT        SIGABRT
-#define SIGBUS        7
-#define SIGFPE        8
-#define SIGKILL       9
-#define SIGUSR1       10
-#define SIGSEGV       11
-#define SIGUSR2       12
-#define SIGPIPE       13
-#define SIGALRM       14
-#define SIGTERM       15
-#define SIGSTKFLT     16
-#define SIGCHLD       17
-#define SIGCONT       18
-#define SIGSTOP       19
-#define SIGTSTP       20
-#define SIGTTIN       21
-#define SIGTTOU       22
-#define SIGURG        23
-#define SIGXCPU       24
-#define SIGXFSZ       25
-#define SIGVTALRM     26
-#define SIGPROF       27
-#define SIGWINCH      28
-#define SIGIO         29
-#define SIGPOLL       SIGIO
-#define SIGPWR        30
-#define SIGSYS        31
-#define SIGUNUSED     SIGSYS
+#define SIGHUP    1
+#define SIGINT    2
+#define SIGQUIT   3
+#define SIGILL    4
+#define SIGTRAP   5
+#define SIGABRT   6
+#define SIGIOT    SIGABRT
+#define SIGSTKFLT 7
+#define SIGFPE    8
+#define SIGKILL   9
+#define SIGBUS    10
+#define SIGSEGV   11
+#define SIGSYS    12
+#define SIGPIPE   13
+#define SIGALRM   14
+#define SIGTERM   15
+#define SIGUSR1   16
+#define SIGUSR2   17
+#define SIGCHLD   18
+#define SIGPWR    19
+#define SIGWINCH  20
+#define SIGURG    21
+#define SIGIO     22
+#define SIGPOLL   SIGIO
+#define SIGSTOP   23
+#define SIGTSTP   24
+#define SIGCONT   25
+#define SIGTTIN   26
+#define SIGTTOU   27
+#define SIGVTALRM 28
+#define SIGPROF   29
+#define SIGXCPU   30
+#define SIGXFSZ   31
+#define SIGUNUSED SIGSYS
 
-#define _NSIG 128
+#define _NSIG 64
