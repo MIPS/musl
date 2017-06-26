@@ -14,7 +14,7 @@ __clone:
 	move  $a3, $9
 	move  $8, $10
 	li    $11, 220
-	syscall
+	syscall32
 
 	beqzc $a0, 1f
 	jrc   $ra

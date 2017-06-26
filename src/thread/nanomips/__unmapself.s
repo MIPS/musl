@@ -3,7 +3,7 @@
 .type   __unmapself,@function
 __unmapself:
 	li   $11, 215		# munmap
-	syscall
+	syscall32
 	li   $a0, 0
 	li   $11, 93		# exit
-	syscall
+	syscall32

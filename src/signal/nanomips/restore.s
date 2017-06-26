@@ -6,4 +6,4 @@
 __restore:
 __restore_rt:
 	li $11, 139	# __NR_rt_sigreturn
-	syscall
+	syscall32

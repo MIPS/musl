@@ -16,7 +16,7 @@ __syscall:
 	move    $8, $9
 	move    $9, $10
 
-	syscall
+	syscall32
 
 	# don't negate the error code in va0
 	jrc     $ra

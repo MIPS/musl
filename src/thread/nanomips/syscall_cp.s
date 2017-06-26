@@ -26,7 +26,7 @@ __cp_begin:
 	move    $8, $10
 	move    $9, $11
 	move    $11, $t0		# syscall number in a7
-	syscall
+	syscall32
 
 __cp_end:
 	jrc     $ra
