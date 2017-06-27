@@ -21,11 +21,11 @@ __cp_begin:
 	move    $t0, $a1		# save syscall number
 	move    $a0, $a2
 	move    $a1, $a3
-	move    $a2, $8
-	move    $a3, $9
-	move    $8, $10
-	move    $9, $11
-	move    $11, $t0		# syscall number in a7
+	move    $a2, $a4
+	move    $a3, $a5
+	move    $a4, $a6
+	move    $a5, $a7
+	move	$a7, $t0		# syscall number in a7
 	syscall32
 
 __cp_end:

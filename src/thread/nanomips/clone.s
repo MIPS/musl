@@ -10,10 +10,10 @@ __clone:
 
 	# Shuffle (fn,sp,fl,arg,ptid,tls,ctid) to (fl,sp,ptid,tls,ctid)
 	move  $a0, $a2
-	move  $a2, $8
-	move  $a3, $9
-	move  $8, $10
-	li    $11, 220
+	move  $a2, $a4
+	move  $a3, $a5
+	move  $a4, $a6
+	li    $a7, 220
 	syscall32
 
 	beqzc $a0, 1f

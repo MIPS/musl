@@ -5,5 +5,5 @@
 .type   __restore_rt,@function
 __restore:
 __restore_rt:
-	li $11, 139	# __NR_rt_sigreturn
+	li $a7, 139	# __NR_rt_sigreturn
 	syscall32

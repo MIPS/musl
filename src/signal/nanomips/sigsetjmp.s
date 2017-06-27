@@ -8,8 +8,8 @@ __sigsetjmp:
 	#aluipc  $gp, %pcrel_hi(_gp)
 	beqzc   $a1, 1f
 
-	sw      $ra, 104($4)
-	sw      $s0, 124($4)
+	sw      $ra, 104($a0)
+	sw      $s0, 124($a0)
 	#lw      $t9, %call16(setjmp)($gp)
 
 	move    $s0, $a0
@@ -18,8 +18,8 @@ __sigsetjmp:
 
 	move    $a1, $a0
 	move    $a0, $s0
-	lw      $ra, 104($4)
-	lw      $s0, 124($4)
+	lw      $ra, 104($a0)
+	lw      $s0, 124($a0)
 
 .hidden __sigsetjmp_tail
 	#lw      $t9, %call16(__sigsetjmp_tail)($gp)
