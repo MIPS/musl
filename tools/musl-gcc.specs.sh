@@ -8,7 +8,7 @@ cat <<EOF
 -nostdinc -isystem $incdir -isystem include%s -D__linux__ %(old_cpp_options)
 
 *cc1:
-%(cc1_cpu) -mel -nostdinc -isystem $incdir -isystem include%s -D__linux__ -msoft-float -fno-builtin
+%(cc1_cpu) %{EB:-meb} %{EL:-mel} %{EB:%{EL:%emay not use both -EB and -EL}} -nostdinc -isystem $incdir -isystem include%s -D__linux__ -msoft-float -fno-builtin
 
 *link_libgcc:
 -L$libdir -L .%s
