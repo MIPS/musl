@@ -1,15 +1,11 @@
 #include <endian.h>
 
-#if __mips_isa_rev > 6
-#define ISA_SUFFIX "r7"
-#else
 #define ISA_SUFFIX "r6"
-#endif
 
 #if __BYTE_ORDER == __LITTLE_ENDIAN
-#define ENDIAN_SUFFIX "el"
-#else
 #define ENDIAN_SUFFIX ""
+#else
+#define ENDIAN_SUFFIX "eb"
 #endif
 
 #ifdef __mips_soft_float
@@ -35,18 +31,3 @@
 
 #define CRTJMP(pc,sp) __asm__ __volatile__( \
 	"move $sp,%1 ; jrc %0" : : "r"(pc), "r"(sp) : "memory" )
-
-#define GETFUNCSYM(fp, sym, got) __asm__ ( \
-	".hidden " #sym "\n" \
-	".set push \n" \
-	".set noreorder \n" \
-	"	.align 2 \n" \
-	"	balc32 1f \n" \
-	"	.gpword . \n" \
-	"	.gpword " #sym " \n" \
-	"1:	lw %0, 0($ra) \n" \
-	"	subu %0, $ra, %0 \n" \
-	"	lw $ra, 4($ra) \n" \
-	"	addu %0, %0, $ra \n" \
-	".set pop \n" \
-	: "=r"(*(fp)) : : "memory", "ra" )

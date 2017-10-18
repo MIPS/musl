@@ -32,14 +32,5 @@ __cp_end:
 	jrc     $ra
 
 __cp_cancel:
-	move    $t0, $ra		# save $ra
-	.align	2
-	balc32  1f
-	.gpword .
-	.gpword __cancel
-1:	lw      $t1, ($ra)
-	subu    $t1, $ra, $t1
-	lw      $t9, 4($ra)
-	addu    $t9, $t9, $t1
-	move    $ra, $t0
+	lapc	$t9, __cancel
 	jrc     $t9			# long __cancel()
