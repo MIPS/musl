@@ -18,14 +18,13 @@ __cp_begin:
 	lw      $a0, 0($a0)
 	bnezc   $a0, __cp_cancel	# if self->cancel is set
 
-	move    $t0, $a1		# save syscall number
+	move	$t4, $a1		# syscall number in t4
 	move    $a0, $a2
 	move    $a1, $a3
 	move    $a2, $a4
 	move    $a3, $a5
 	move    $a4, $a6
 	move    $a5, $a7
-	move	$a7, $t0		# syscall number in a7
 	syscall32
 
 __cp_end:

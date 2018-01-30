@@ -4,8 +4,8 @@
 .type   __syscall,@function
 __syscall:
 
-	# syscall number in a7
-	move    $a7, $a0
+	# syscall number in t4
+	move    $t4, $a0
 
 	# syscall arguments from a1-a5
 	# a6 is not used as an argument to syscall

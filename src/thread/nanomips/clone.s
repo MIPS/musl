@@ -13,7 +13,7 @@ __clone:
 	move  $a2, $a4
 	move  $a3, $a5
 	move  $a4, $a6
-	li    $a7, 220
+	li    $t4, 220	# __NR_clone
 	syscall32
 
 	beqzc $a0, 1f
