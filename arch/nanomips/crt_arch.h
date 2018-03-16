@@ -13,7 +13,7 @@ __asm__(
 ".weak _DYNAMIC \n"
 ".hidden _DYNAMIC \n"
 "	lapc $a1, _DYNAMIC \n"
-"	lapc $gp, _gp \n"
+"	lapc[48] $gp, _gp \n"
 "	move $a0, $sp \n"
 "	and $sp, $sp, -16 \n"
 "	jalrc $t9 \n"
