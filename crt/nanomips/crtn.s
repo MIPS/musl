@@ -1,13 +1,7 @@
 .set noreorder
 
 .section .init
-	lw $gp,24($sp)
-	lw $ra,28($sp)
-	addu $sp,$sp,32
-	jrc $ra
+	restore.jrc 32,$ra,$gp
 
 .section .fini
-	lw $gp,24($sp)
-	lw $ra,28($sp)
-	addu $sp,$sp,32
-	jrc $ra
+	restore.jrc 32,$ra,$gp
