@@ -19,6 +19,6 @@ __clone:
 	beqzc $a0, 1f
 	jrc   $ra
 
-1:	lw    $t9, 0($sp)
+1:	lw    $t0, 0($sp)
 	lw    $a0, 4($sp)
-	jrc   $t9
+	jrc   $t0

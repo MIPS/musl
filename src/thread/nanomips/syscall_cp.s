@@ -31,5 +31,5 @@ __cp_end:
 	jrc     $ra
 
 __cp_cancel:
-	lapc	$t9, __cancel
-	jrc     $t9			# long __cancel()
+	lapc	$t0, __cancel
+	jrc     $t0			# long __cancel()
