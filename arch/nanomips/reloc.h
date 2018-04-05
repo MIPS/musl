@@ -29,3 +29,8 @@
 
 #define CRTJMP(pc,sp) __asm__ __volatile__( \
 	"move $sp,%1 ; jrc %0" : : "r"(pc), "r"(sp) : "memory" )
+
+#define GETFUNCSYM(fp, sym, got) __asm__ ( \
+	".hidden " #sym "\n" \
+	"	lapc %0, " #sym " \n" \
+	: "=r"(*(fp)) : : "memory" )

@@ -631,7 +631,7 @@ fi
 
 if test "$ARCH" = "nanomips" ; then
 trycppif "__mips_isa_rev > 6" "$t" && SUBARCH=${SUBARCH}r7
-trycppif "_MIPSEL || __MIPSEL || __MIPSEL__" "$t" && SUBARCH=${SUBARCH}el
+trycppif "_MIPSEB || __MIPSEB || __MIPSEB__" "$t" && SUBARCH=${SUBARCH}eb
 trycppif __mips_soft_float "$t" && SUBARCH=${SUBARCH}-sf
 fi
 
