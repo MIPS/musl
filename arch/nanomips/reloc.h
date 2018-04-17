@@ -16,6 +16,8 @@
 
 #define LDSO_ARCH "nanomips" ISA_SUFFIX ENDIAN_SUFFIX FP_SUFFIX
 
+#define NO_LEGACY_INITFINI
+
 #define TPOFF_K 0
 
 #define REL_SYMBOLIC    R_NANOMIPS_32
