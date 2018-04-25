@@ -28,6 +28,7 @@
 #define REL_DTPMOD      R_NANOMIPS_TLS_DTPMOD
 #define REL_DTPOFF      R_NANOMIPS_TLS_DTPREL
 #define REL_TPOFF       R_NANOMIPS_TLS_TPREL
+/* #define REL_TLSDESC     R_NANOMIPS_TLS_DESC */
 
 #define CRTJMP(pc,sp) __asm__ __volatile__( \
 	"move $sp,%1 ; jrc %0" : : "r"(pc), "r"(sp) : "memory" )
