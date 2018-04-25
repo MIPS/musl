@@ -1,8 +1,8 @@
 static inline struct pthread *__pthread_self()
 {
-	register char *tp __asm__("$3");
-	__asm__ __volatile__ ("rdhwr %0, $29" : "=r" (tp) );
-	return (struct pthread *) (tp - sizeof(struct pthread));
+	char *self;
+	__asm__ __volatile__ ("rdhwr %0, $29" : "=r" (self) );
+	return (struct pthread *) (self - sizeof(struct pthread));
 }
 
 // Use variant I.
