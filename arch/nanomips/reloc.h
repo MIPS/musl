@@ -25,9 +25,9 @@
 #define REL_PLT         R_NANOMIPS_JUMP_SLOT
 #define REL_RELATIVE    R_NANOMIPS_RELATIVE
 #define REL_COPY        R_NANOMIPS_COPY
-#define REL_DTPMOD      R_NANOMIPS_TLS_DTPMOD32
-#define REL_DTPOFF      R_NANOMIPS_TLS_DTPREL32
-#define REL_TPOFF       R_NANOMIPS_TLS_TPREL32
+#define REL_DTPMOD      R_NANOMIPS_TLS_DTPMOD
+#define REL_DTPOFF      R_NANOMIPS_TLS_DTPREL
+#define REL_TPOFF       R_NANOMIPS_TLS_TPREL
 
 #define CRTJMP(pc,sp) __asm__ __volatile__( \
 	"move $sp,%1 ; jrc %0" : : "r"(pc), "r"(sp) : "memory" )
