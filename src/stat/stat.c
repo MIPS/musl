@@ -5,10 +5,13 @@
 
 int stat(const char *restrict path, struct stat *restrict buf)
 {
-#ifdef SYS_stat
+#if defined(SYS_stat)
 	return syscall(SYS_stat, path, buf);
-#else
+#elif defined(SYS_fstatat)
 	return syscall(SYS_fstatat, AT_FDCWD, path, buf, 0);
+#else
+	return syscall(SYS_statx, AT_FDCWD, path, AT_STATX_SYNC_AS_STAT,
+			STATX_BASIC_STATS, buf);
 #endif
 }
 
