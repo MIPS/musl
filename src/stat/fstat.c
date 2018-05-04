@@ -1,9 +1,11 @@
+#define _GNU_SOURCE
 #include <sys/stat.h>
 #include <errno.h>
 #include <fcntl.h>
 #include "syscall.h"
 #include "libc.h"
 #include "stat.h"
+#undef fstat64
 
 void __procfdname(char *, unsigned);
 
