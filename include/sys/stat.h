@@ -6,6 +6,10 @@ extern "C" {
 
 #include <features.h>
 
+#define __NEED_int64_t
+#define __NEED_uint64_t
+#define __NEED_uint32_t
+#define __NEED_uint16_t
 #define __NEED_dev_t
 #define __NEED_ino_t
 #define __NEED_mode_t
@@ -69,6 +73,45 @@ extern "C" {
 
 #define UTIME_NOW  0x3fffffff
 #define UTIME_OMIT 0x3ffffffe
+
+struct statx_timestamp {
+	int64_t tv_sec;		/* Seconds since the Epoch (UNIX time) */
+	uint32_t tv_nsec;	/* Nanoseconds since tv_sec */
+	uint32_t __reserved;
+};
+
+struct statx {
+	uint32_t stx_mask;		/* Mask of bits indicating filled fields */
+	uint32_t stx_blksize;		/* Block size for filesystem I/O */
+	uint64_t stx_attributes;	/* Extra file attribute indicators */
+	uint32_t stx_nlink;		/* Number of hard links */
+	uint32_t stx_uid;		/* User ID of owner */
+	uint32_t stx_gid;		/* Group ID of owner */
+	uint16_t stx_mode;		/* File type and mode */
+	uint16_t __spare0[1];
+	uint64_t stx_ino;		/* Inode number */
+	uint64_t stx_size;		/* Total size in bytes */
+	uint64_t stx_blocks;		/* Number of 512B blocks allocated */
+	uint64_t stx_attributes_mask;	/* Mask to show what's supported in stx_attributes */
+
+	/* The following fields are file timestamps */
+	struct statx_timestamp stx_atime;	/* Last access */
+	struct statx_timestamp stx_btime;	/* Creation */
+	struct statx_timestamp stx_ctime;	/* Last status change */
+	struct statx_timestamp stx_mtime;	/* Last modification */
+
+	/* If this file represents a device, then the next two
+	   fields contain the ID of the device */
+	uint32_t stx_rdev_major;	/* Major ID */
+	uint32_t stx_rdev_minor;	/* Minor ID */
+
+	/* The next two fields contain the ID of the device
+	   containing the filesystem where the file resides */
+	uint32_t stx_dev_major;		/* Major ID */
+	uint32_t stx_dev_minor;		/* Minor ID */
+
+	uint64_t __spare2[14];		/* Spare space for future expansion */
+};
 
 int stat(const char *__restrict, struct stat *__restrict);
 int fstat(int, struct stat *);
