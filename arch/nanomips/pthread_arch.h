@@ -10,4 +10,6 @@ static inline struct pthread *__pthread_self()
 // The TP points to the end of the TCB.
 #define TP_ADJ(p) ((char *)(p) + sizeof(struct pthread))
 
+#define NO_STATIC_TLS_DESC_RESOLVER
+
 #define MC_PC pc
