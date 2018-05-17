@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include "syscall.h"
 #include "libc.h"
+#include "stat.h"
 
 void __procfdname(char *, unsigned);
 

@@ -1,6 +1,7 @@
 #include <sys/stat.h>
 #include "syscall.h"
 #include "libc.h"
+#include "stat.h"
 
 int fstatat(int fd, const char *restrict path, struct stat *restrict buf, int flag)
 {
