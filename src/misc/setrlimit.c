@@ -17,10 +17,13 @@ int __setrlimit(int resource, const struct rlimit *rlim)
 		rlim = &tmp;
 	}
 	int ret = __syscall(SYS_prlimit64, 0, resource, rlim, 0);
+#if defined(SYS_setrlimit)
 	if (ret != -ENOSYS) return ret;
 	k_rlim[0] = MIN(rlim->rlim_cur, MIN(-1UL, SYSCALL_RLIM_INFINITY));
 	k_rlim[1] = MIN(rlim->rlim_max, MIN(-1UL, SYSCALL_RLIM_INFINITY));
-	return __syscall(SYS_setrlimit, resource, k_rlim);
+	ret = __syscall(SYS_setrlimit, resource, k_rlim);
+#endif
+	return ret;
 }
 
 struct ctx {
