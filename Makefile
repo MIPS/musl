@@ -136,6 +136,8 @@ $(CRT_OBJS): CFLAGS_ALL += -DCRT
 
 $(LOBJS) $(LDSO_OBJS): CFLAGS_ALL +=
 
+$(AOBJS): CFLAGS_ALL += -fno-pic
+
 CC_CMD = $(CC) $(CFLAGS_ALL) -c -o $@ $<
 
 # Choose invocation of assembler to be used

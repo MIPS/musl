@@ -588,6 +588,7 @@ tryldflag LDFLAGS_AUTO -Wl,--exclude-libs=ALL
 tryldflag LDFLAGS_AUTO -Wl,-Bsymbolic-functions
 
 # Find compiler runtime library
+test -z "$LIBCC" && tryldflag LIBCC -lgcc_s && tryldflag LIBCC -lgcc_eh
 test -z "$LIBCC" && tryldflag LIBCC -lgcc && tryldflag LIBCC -lgcc_eh
 test -z "$LIBCC" && tryldflag LIBCC -lcompiler_rt
 test -z "$LIBCC" && try_libcc=`$CC -print-file-name=libpcc.a 2>/dev/null` \
@@ -768,7 +769,9 @@ test "x$static" = xno && echo "STATIC_LIBS ="
 test "x$shared" = xno && echo "SHARED_LIBS ="
 test "x$cc_family" = xgcc && echo 'WRAPCC_GCC = $(CC)'
 test "x$cc_family" = xclang && echo 'WRAPCC_CLANG = $(CC)'
-test "x$pic_default" = xyes && echo 'AOBJS = $(LOBJS)'
+if test "$ARCH" != "nanomips" ; then
+    test "x$pic_default" = xyes && echo 'AOBJS = $(LOBJS)'
+fi
 exec 1>&3 3>&-
 
 test "$srcdir" = "." || ln -sf $srcdir/Makefile .
