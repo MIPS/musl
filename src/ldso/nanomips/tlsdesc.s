@@ -1,3 +1,5 @@
+.linkrelax
+.module pic1
 .hidden __tls_get_new
 
 .global __tlsdesc_dynamic

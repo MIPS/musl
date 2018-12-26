@@ -1,3 +1,5 @@
+.linkrelax
+.module pic1
 .set noreorder
 .global __unmapself
 .type   __unmapself,@function

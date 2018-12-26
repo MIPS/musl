@@ -1,3 +1,5 @@
+.linkrelax
+.module pic1
 .set    noreorder
 .global __restore
 .global __restore_rt
