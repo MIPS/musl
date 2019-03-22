@@ -1,3 +1,10 @@
+	/* Enable linker relaxation for this module.  */
+	.linkrelax
+	/* Set PIC mode according to compiler invocation.  */
+#define TOK(X,Y) X##Y
+#define MODULE(X,Y) .module TOK(X,Y)
+	MODULE(pic,__pic__)
+
 #ifndef __mips_soft_float
 
 .set noreorder
