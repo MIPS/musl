@@ -49,6 +49,12 @@ umask 077
 
 if test "$symlink" ; then
 ln -s "$1" "$tmp"
+which symlinks
+if [ $? -eq 0 ]; then
+    pushd `dirname $tmp`
+    symlinks -cr .
+    popd
+fi
 else
 cat < "$1" > "$tmp"
 chmod "$mode" "$tmp"
